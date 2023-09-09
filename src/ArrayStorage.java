@@ -13,7 +13,8 @@ public class ArrayStorage {
     }
 
     public void save(Resume r) {
-
+        storage[size] = r;
+        size++;
     }
 
     public Resume get(String uuid) {
@@ -26,7 +27,13 @@ public class ArrayStorage {
     }
 
     public void delete(String uuid) {
-
+        for (int i = 0; i < size; i++) {
+            if (uuid.equals(storage[i].uuid)) {
+                storage[i] = storage[size - 1];
+                storage[size - 1] = null;
+                size--;
+            }
+        }
     }
 
     /**
@@ -41,6 +48,6 @@ public class ArrayStorage {
     }
 
     public int size() {
-        return 0;
+        return size;
     }
 }
