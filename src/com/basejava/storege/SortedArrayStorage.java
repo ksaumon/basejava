@@ -5,10 +5,6 @@ import com.basejava.model.Resume;
 import java.util.Arrays;
 
 public class SortedArrayStorage extends AbstractArrayStorage {
-    @Override
-    public void clear() {
-
-    }
 
     @Override
     public void update(Resume r) {
@@ -16,18 +12,11 @@ public class SortedArrayStorage extends AbstractArrayStorage {
     }
 
     @Override
-    public void save(Resume r) {
-
-    }
+    protected void insertIndexR(Resume r, int index) {}
 
     @Override
-    public void delete(String uuid) {
+    protected void insertDeletedIndexR(int index) {
 
-    }
-
-    @Override
-    public Resume[] getAll() {
-        return new Resume[0];
     }
 
     @Override
