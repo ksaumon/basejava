@@ -55,15 +55,25 @@ public abstract class AbstractArrayStorageTest {
 
     @Test
     public void getAll() {
-
+        Resume[] arr = storage.getAll();
+        Assert.assertEquals(new Resume(UUID_1), arr[0]);
+        Assert.assertEquals(new Resume(UUID_2), arr[1]);
+        Assert.assertEquals(new Resume(UUID_3), arr[2]);
     }
 
     @Test
     public void get() {
+        ToHelpGet(new Resume(UUID_1));
+        ToHelpGet(new Resume(UUID_2));
+        ToHelpGet(new Resume(UUID_3));
     }
 
     @Test(expected = NotExistStorageException.class)
     public void getNotExist() {
         storage.get("dummy");
+    }
+
+    public void ToHelpGet(Resume r) {
+        Assert.assertEquals(r, storage.get(r.getUuid()));
     }
 }
