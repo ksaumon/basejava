@@ -1,4 +1,4 @@
-package com.basejava.storege;
+package com.basejava;
 
 import com.basejava.model.Resume;
 
