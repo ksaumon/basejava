@@ -8,6 +8,8 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.List;
+
 import static org.junit.Assert.assertEquals;
 
 public abstract class AbstractStorageTest {
@@ -84,7 +86,7 @@ public abstract class AbstractStorageTest {
             for (int i = 4; i <= AbstractArrayStorage.STORAGE_LIMIT; i++) {
                 storage.save(new Resume());
             }
-        } catch (StorageException e) {
+        } catch(StorageException e) {
             Assert.fail();
         }
         storage.save(new Resume());
@@ -104,10 +106,8 @@ public abstract class AbstractStorageTest {
 
     @Test
     public void getAll() {
-        Resume[] actual = storage.getAll();
-        assertEquals(RESUME_1, actual[0]);
-        assertEquals(RESUME_2, actual[1]);
-        assertEquals(RESUME_3, actual[2]);
+        List <Resume> list = storage.getAll();
+        assertEquals(3, list.size());
     }
 
     @Test

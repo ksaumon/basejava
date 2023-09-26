@@ -4,6 +4,7 @@ import com.basejava.exception.StorageException;
 import com.basejava.model.Resume;
 
 import java.util.Arrays;
+import java.util.List;
 
 public abstract class AbstractArrayStorage extends AbstractStorage {
     protected static final int STORAGE_LIMIT = 10000;
@@ -18,6 +19,7 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
         Arrays.fill(storage, 0, size, null);
         size = 0;
     }
+
     @Override
     protected void doUpdate(Resume r, Object index) {
         storage[(Integer) index] = r;
@@ -40,8 +42,8 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
         size--;
     }
 
-    public Resume[] getAll() {
-        return Arrays.copyOfRange(storage, 0, size);
+    public List <Resume> getAll() {
+        return List.of(Arrays.copyOfRange(storage, 0, size));
     }
 
     @Override
@@ -55,6 +57,8 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
     }
 
     protected abstract void insertResume(Resume r, int index);
+
     protected abstract void deleteResume(int index);
+
     protected abstract Integer getSearchKey(String uuid);
 }

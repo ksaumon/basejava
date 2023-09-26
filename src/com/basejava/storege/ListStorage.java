@@ -6,7 +6,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ListStorage extends AbstractStorage {
-    private List<Resume> list = new ArrayList();
+    private List <Resume> list = new ArrayList();
+
     @Override
     protected Integer getSearchKey(String uuid) {
         for (int i = 0; i < list.size(); i++) {
@@ -48,8 +49,8 @@ public class ListStorage extends AbstractStorage {
     }
 
     @Override
-    public Resume[] getAll() {
-        return list.toArray(new Resume[list.size()]);
+    public List <Resume> getAll() {
+        return List.of(list.toArray(new Resume[list.size()]));
     }
 
     @Override
