@@ -4,6 +4,9 @@ import com.basejava.exception.ExistStorageException;
 import com.basejava.exception.NotExistStorageException;
 import com.basejava.model.Resume;
 
+import java.util.Collections;
+import java.util.List;
+
 public abstract class AbstractStorage implements Storage {
 
     public void update(Resume r) {
@@ -41,6 +44,15 @@ public abstract class AbstractStorage implements Storage {
         }
         return searchKey;
     }
+
+    @Override
+    public List <Resume> getAllSorted() {
+        List <Resume> list = doCopyAll();
+        Collections.sort(list);
+        return list;
+    }
+
+    protected abstract  List<Resume> doCopyAll();
 
     protected abstract Object getSearchKey(String uuid);
 
