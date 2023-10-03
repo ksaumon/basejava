@@ -1,5 +1,6 @@
 package com.basejava;
 
+import com.basejava.model.ContactType;
 import com.basejava.model.SectionType;
 
 public class TestSingleton {
@@ -21,6 +22,10 @@ public class TestSingleton {
         System.out.println(instance.ordinal());
 
         for (SectionType type : SectionType.values()) {
+            System.out.println(type.getTitle());
+        }
+
+        for (ContactType type : ContactType.values()) {
             System.out.println(type.getTitle());
         }
     }
