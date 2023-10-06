@@ -1,6 +1,9 @@
 package com.basejava;
 
-import com.basejava.model.*;
+import com.basejava.model.ContactType;
+import com.basejava.model.Resume;
+import com.basejava.model.SectionType;
+import com.basejava.model.TextSection;
 
 public class ResumeTestData {
     public static void main(String[] args) {
@@ -27,7 +30,27 @@ public class ResumeTestData {
         resume.addSection(SectionType.PERSONAL, new TextSection("Аналитический склад ума, сильная логика," +
                 "креативность, инициативность. Пурист кода и архитектуры."));
 
-        resume.addSection(SectionType.ACHIEVEMENT, new TextSection("Организация команды и успешная реализация" +
+        resume.addSection(SectionType.ACHIEVEMENT, new TextSection(textACHIEVEMENT()));
+
+        resume.addSection(SectionType.QUALIFICATIONS, new TextSection(textACHIEVEMENT()));
+
+//        resume.addSection(SectionType.EXPERIENCE, new OrganizationSection(
+//                (List<Organization>) new Organization("Wrike", "https://www.wrike.com/", (List<Period>) new Period(2014,
+//                       Month.OCTOBER, 2016, Month.JANUARY, "Старший разработчик (backend)",
+//                       "Проектирование и разработка онлайн платформы управления проектами Wrike" +
+//                               "(Java 8 API, Maven, Spring, MyBatis, Guava, Vaadin, PostgreSQL, Redis)." +
+//                               "Двухфакторная аутентификация, авторизация по OAuth1, OAuth2, JWT SSO."))));
+
+        for (SectionType type : SectionType.values()) {
+            if (resume.getSection(type) != null) {
+                System.out.println(type.getTitle() + "\n" +
+                        ((TextSection) resume.getSection(type)).getContent() + "\n");
+            }
+        }
+
+    }
+    private static String textACHIEVEMENT() {
+        return "Организация команды и успешная реализация" +
                 "Java проектов для сторонних заказчиков: приложения автопарк на стеке Spring Cloud/микросервисы," +
                 "система мониторинга показателей спортсменов на Spring Boot, участие в проекте МЭШ на Play-2," +
                 "многомодульный Spring Boot + Vaadin проект для комплексных DIY смет\n" +
@@ -47,9 +70,11 @@ public class ResumeTestData {
                 "через систему мониторинга Nagios. Реализация онлайн клиента для администрирования и мониторинга" +
                 "системы по JMX (Jython/ Django).\n" +
                 "Реализация протоколов по приему платежей всех основных платежных системы России" +
-                "(Cyberplat, Eport, Chronopay, Сбербанк), Белоруcсии(Erip, Osmp) и Никарагуа."));
+                "(Cyberplat, Eport, Chronopay, Сбербанк), Белоруcсии(Erip, Osmp) и Никарагуа.";
+    }
 
-        resume.addSection(SectionType.QUALIFICATIONS, new TextSection("JEE AS: GlassFish (v2.1, v3), OC4J," +
+    private static String textQUALIFICATIONS() {
+        return "JEE AS: GlassFish (v2.1, v3), OC4J," +
                 "JBoss, Tomcat, Jetty, WebLogic, WSO2\n" +
                 "Version control: Subversion, Git, Mercury, ClearCase, Perforce\n" +
                 "DB: PostgreSQL(наследование, pgplsql, PL/Python), Redis (Jedis), H2, Oracle, MySQL, SQLite," +
@@ -71,14 +96,6 @@ public class ResumeTestData {
                 "OpenCmis, Bonita, pgBouncer\n" +
                 "Отличное знание и опыт применения концепций ООП, SOA, шаблонов проектрирования, архитектурных" +
                 "шаблонов, UML, функционального программирования\n" +
-                "Родной русский, английский \"upper intermediate\""));
-
-        for (SectionType type : SectionType.values()) {
-            if ( resume.getSection(type) != null) {
-                System.out.println(type.getTitle() + "\n" +
-                        ((TextSection) resume.getSection(type)).getContent() + "\n");
-            }
-        }
-
+                "Родной русский, английский ";
     }
 }
