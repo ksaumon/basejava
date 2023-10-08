@@ -27,6 +27,7 @@ public class Period {
         this.title = title;
         this.description = description;
     }
+
     public LocalDate getStartDate() {
         return startDate;
     }

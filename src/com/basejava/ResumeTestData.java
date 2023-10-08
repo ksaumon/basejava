@@ -7,10 +7,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ResumeTestData {
-    public static void main(String[] args) {
-        Resume resume = new Resume("John Doe");
+    public static Resume createFilledResume(String uuid, String fullName) {
+        Resume resume = new Resume(uuid, fullName);
         List <Organization> organizations = new ArrayList <>();
-
         resume.addContact(ContactType.PHONE, "+7(921) 855-0482");
         resume.addContact(ContactType.HOME_PHONE, "+7(345) 855-0482");
         resume.addContact(ContactType.MOBILE, "+7(921) 855-0482");
@@ -66,8 +65,8 @@ public class ResumeTestData {
                 "JavaScript: jQuery, ExtJS, Bootstrap.js, underscore.js\n" +
                 "Scala: SBT, Play2, Specs2, Anorm, Spray, Akka\n" +
                 "Технологии: Servlet, JSP/JSTL, JAX-WS, REST, EJB, RMI, JMS, JavaMail, JAXB, StAX, SAX, DOM, XSLT," +
-                "MDB, JMX, JDBC, JPA, JNDI, JAAS, SOAP, AJAX," + "\n" + "Commet, HTML5, ESB, CMIS, BPMN2, LDAP, OAuth1, OAuth2," +
-                "JWT.\n" +
+                "MDB, JMX, JDBC, JPA, JNDI, JAAS, SOAP, AJAX," + "\n" + "Commet, HTML5, ESB, CMIS, BPMN2, LDAP," +
+                "OAuth1, OAuth2, JWT.\n" +
                 "Инструменты: Maven + plugin development, Gradle, настройка Ngnix\n" +
                 "администрирование Hudson/Jenkins, Ant + custom task, SoapUI, JPublisher, Flyway, Nagios, iReport," +
                 "OpenCmis, Bonita, pgBouncer\n" +
@@ -83,17 +82,15 @@ public class ResumeTestData {
         }
 
         organizations.add(new Organization("Wrike", "https://www.wrike.com/",
-                List.of(new Period(2014, Month.OCTOBER, 2016, Month.JANUARY,
-                        "Старший разработчик (backend)",
-                        "Проектирование и разработка онлайн платформы управления проектами Wrike" +
-                                "(Java 8 API, Maven, Spring, MyBatis, Guava, Vaadin, PostgreSQL, Redis)." + "\n" +
-                                "Двухфакторная аутентификация, авторизация по OAuth1, OAuth2, JWT SSO."))));
+                List.of(new Period(2014, Month.OCTOBER, 2016, Month.JANUARY, "Старший разработчик" +
+                        "(backend)", "Проектирование и разработка онлайн платформы управления проектами" +
+                        "Wrike (Java 8 API, Maven, Spring, MyBatis, Guava, Vaadin, PostgreSQL, Redis)." + "\n" +
+                        "Двухфакторная аутентификация, авторизация по OAuth1, OAuth2, JWT SSO."))));
         resume.addSection(SectionType.EXPERIENCE, new OrganizationSection(organizations));
 
         organizations.add(new Organization("Coursera", "https://www.coursera.org/course/progfun",
-                List.of(new Period(2013, Month.MARCH, 2013, Month.MAY,
-                        "'Functional Programming Principles in Scala' by Martin Odersky",
-                        ""))));
+                List.of(new Period(2013, Month.MARCH, 2013, Month.MAY, "'Functional Programming" +
+                        "Principles in Scala' by Martin Odersky", ""))));
         resume.addSection(SectionType.EDUCATION, new OrganizationSection(organizations));
 
         for (Organization organization : organizations) {
@@ -103,5 +100,6 @@ public class ResumeTestData {
                         "\n" + period.getDescription() + "\n");
             }
         }
+        return resume;
     }
 }

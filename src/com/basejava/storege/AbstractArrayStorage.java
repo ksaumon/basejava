@@ -6,7 +6,7 @@ import com.basejava.model.Resume;
 import java.util.Arrays;
 import java.util.List;
 
-public abstract class AbstractArrayStorage extends AbstractStorage<Integer> {
+public abstract class AbstractArrayStorage extends AbstractStorage <Integer> {
     protected static final int STORAGE_LIMIT = 10000;
     protected Resume[] storage = new Resume[STORAGE_LIMIT];
     protected int size;
