@@ -8,7 +8,7 @@ public class Organization {
     private final String website;
     private final List <Period> periods;
 
-    public Organization(String name, String website, List <Period> periods) {
+    public Organization(String name, String website, List<Period> periods) {
         this.name = name;
         this.website = website;
         this.periods = periods;
