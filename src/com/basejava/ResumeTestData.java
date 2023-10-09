@@ -19,10 +19,6 @@ public class ResumeTestData {
         resume.addContact(ContactType.HOME_PAGE, "john.doe@example.com");
         resume.addContact(ContactType.LINKEDIN, "linkedin.com/in/johndoe");
         resume.addContact(ContactType.GITHUB, "github.com/johndoe");
-
-        for (ContactType type : ContactType.values()) {
-            System.out.println(type.getTitle() + "  " + resume.getContact(type));
-        }
         System.out.println();
 
         resume.addSection(SectionType.OBJECTIVE, new TextSection("Ведущий стажировок и корпоративного обучения" +
@@ -74,13 +70,6 @@ public class ResumeTestData {
                 "шаблонов, UML, функционального программирования\n" +
                 "Родной русский, английский "));
 
-        for (SectionType type : SectionType.values()) {
-            if (resume.getSection(type) != null) {
-                System.out.println(type.getTitle() + "\n" +
-                        ((TextSection) resume.getSection(type)).getContent() + "\n");
-            }
-        }
-
         organizations.add(new Organization("Wrike", "https://www.wrike.com/",
                 List.of(new Period(2014, Month.OCTOBER, 2016, Month.JANUARY, "Старший разработчик" +
                         "(backend)", "Проектирование и разработка онлайн платформы управления проектами" +
@@ -92,14 +81,6 @@ public class ResumeTestData {
                 List.of(new Period(2013, Month.MARCH, 2013, Month.MAY, "'Functional Programming" +
                         "Principles in Scala' by Martin Odersky", ""))));
         resume.addSection(SectionType.EDUCATION, new OrganizationSection(organizations));
-
-        for (Organization organization : organizations) {
-            System.out.println(organization.getName() + "\n" + organization.getWebsite());
-            for (Period period : organization.getPeriods()) {
-                System.out.println(period.getStartDate() + " " + period.getEndDate() + "\n" + period.getTitle() +
-                        "\n" + period.getDescription() + "\n");
-            }
-        }
         return resume;
     }
 }
