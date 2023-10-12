@@ -50,9 +50,9 @@ public class MainFile {
         if (files != null) {
             for (File file : files) {
                 if (file.isFile()) {
-                    System.out.println(shift + "File: " + file.getName());
+                    System.out.println(shift + "File : " + file.getName());
                 } else if (file.isDirectory()) {
-                    System.out.println(shift + "Directory: " + file.getName());
+                    System.out.println(shift + "Directory : " + file.getName());
                     printDirectoryDeep(file, shift + "  ");
                 }
             }
