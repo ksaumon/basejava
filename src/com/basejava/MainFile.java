@@ -14,7 +14,7 @@ public class MainFile {
         } catch(IOException e) {
             throw new RuntimeException("Error", e);
         }
-        File dir = new File("C:\\Users\\semen\\basejava\\src\\com\\basejava");
+        File dir = new File("C:\\Users\\semen\\basejava\\src");
         System.out.println(dir.isDirectory());
         String[] list = dir.list();
         if (list != null) {
@@ -42,18 +42,18 @@ public class MainFile {
         } catch(IOException e) {
             throw new RuntimeException(e);
         }
-        printDirectoryDeep(dir);
+        printDirectoryDeep(dir, " ");
     }
 
-    public static void printDirectoryDeep(File dir) {
+    public static void printDirectoryDeep(File dir, String shift) {
         File[] files = dir.listFiles();
         if (files != null) {
             for (File file : files) {
                 if (file.isFile()) {
-                    System.out.println("     File : " + file.getName());
+                    System.out.println(shift + "File: " + file.getName());
                 } else if (file.isDirectory()) {
-                    System.out.println("Directory : " + file.getName());
-                    printDirectoryDeep(file);
+                    System.out.println(shift + "Directory: " + file.getName());
+                    printDirectoryDeep(file, shift + "  ");
                 }
             }
         }

@@ -6,12 +6,13 @@ import com.basejava.storege.serializer.StreamSerializer;
 
 import java.io.*;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
 public class FileStorage extends AbstractStorage <File> {
     private final File directory;
-    private StreamSerializer streamSerializer;
+    private final StreamSerializer streamSerializer;
 
     protected FileStorage(File directory, StreamSerializer streamSerializer) {
         Objects.requireNonNull(directory, "directory must not be null");
@@ -28,11 +29,8 @@ public class FileStorage extends AbstractStorage <File> {
 
     @Override
     protected List <Resume> doCopyAll() {
-        File[] files = directory.listFiles();
-        if (files == null) {
-            throw new StorageException("Directory read error", null);
-        }
-        List <Resume> list = new ArrayList <>(files.length);
+        List <File> files = listFilesInDirectory();
+        List <Resume> list = new ArrayList <>(files.size());
         for (File file : files) {
             list.add(doGet(file));
         }
@@ -86,22 +84,23 @@ public class FileStorage extends AbstractStorage <File> {
 
     @Override
     public void clear() {
-        File[] files = directory.listFiles();
-        if (files != null) {
-            for (File file : files) {
-                doDelete(file);
-            }
-        } else {
-            throw new StorageException("File delete error", null);
+        List <File> files = listFilesInDirectory();
+        for (File file : files) {
+            doDelete(file);
         }
     }
 
     @Override
     public int size() {
-        String[] list = directory.list();
-        if (list == null) {
-            throw new StorageException("Directory read error", null);
+        List <File> files = listFilesInDirectory();
+        return files.size();
+    }
+
+    private List <File> listFilesInDirectory() {
+        File[] files = directory.listFiles();
+        if (files == null) {
+            throw new StorageException("Directory read error");
         }
-        return list.length;
+        return Arrays.asList(files);
     }
 }
