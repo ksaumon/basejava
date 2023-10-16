@@ -33,7 +33,7 @@ public class Period implements Serializable {
         this.startDate = startDate;
         this.endDate = endDate;
         this.title = title;
-        this.description = description == null ? "" : description;
+        this.description = description;
     }
 
     public LocalDate getStartDate() {

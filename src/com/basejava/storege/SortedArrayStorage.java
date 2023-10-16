@@ -3,6 +3,7 @@ package com.basejava.storege;
 import com.basejava.model.Resume;
 
 import java.util.Arrays;
+import java.util.Comparator;
 
 public class SortedArrayStorage extends AbstractArrayStorage {
    /* private static class ResumeComparator implements Comparator<Resume>{
@@ -13,7 +14,7 @@ public class SortedArrayStorage extends AbstractArrayStorage {
         }
     }*/
 
-//    private static final Comparator<Resume> RESUME_COMPARATOR = Comparator.comparing(Resume::getUuid);
+    private static final Comparator <Resume> RESUME_COMPARATOR = Comparator.comparing(Resume::getUuid);
 //    Alt + Enter выбор упрощение либо усложнение чтение записи.
 
     @Override

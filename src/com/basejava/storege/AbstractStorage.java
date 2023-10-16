@@ -12,8 +12,7 @@ public abstract class AbstractStorage<SK> implements Storage {
 
     private static final Logger LOG = Logger.getLogger(AbstractStorage.class.getName());
 
-    protected static final Comparator <Resume> RESUME_COMPARATOR = Comparator.comparing(Resume::getFullName)
-            .thenComparing(Resume::getUuid);
+    protected static final Comparator <Resume> RESUME_COMPARATOR = Comparator.comparing(Resume::getFullName);
 
     public void update(Resume r) {
         LOG.info("update" + r);
