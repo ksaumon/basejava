@@ -13,12 +13,12 @@ public class Organization implements Serializable {
     private String website;
     private List <Period> periods;
 
-    public Organization() {
+    public Organization(Organization organization) {
     }
 
     public Organization(String name, String website, List <Period> periods) {
         this.name = name;
-        this.website = website;
+        this.website = website == null ? "" : website;
         this.periods = periods;
     }
 
