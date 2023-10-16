@@ -39,11 +39,11 @@ public class DataStreamSerializer implements StreamSerializer {
                         writeCollection(dos, ((OrganizationSection) section).getOrganizations(), org -> {
                             dos.writeUTF(org.getWebsite());
                             dos.writeUTF(org.getWebsite());
-                            writeCollection(dos, org.getPeriods(), position -> {
-                                writeLocalDate(dos, position.getStartDate());
-                                writeLocalDate(dos, position.getEndDate());
-                                dos.writeUTF(position.getTitle());
-                                dos.writeUTF(position.getDescription());
+                            writeCollection(dos, org.getPeriods(), periods -> {
+                                writeLocalDate(dos, periods.getStartDate());
+                                writeLocalDate(dos, periods.getEndDate());
+                                dos.writeUTF(periods.getTitle());
+                                dos.writeUTF(periods.getDescription());
                             });
                         });
                         break;
