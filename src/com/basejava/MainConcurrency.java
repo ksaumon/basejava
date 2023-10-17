@@ -1,9 +1,12 @@
 package com.basejava;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class MainConcurrency {
     private int counter;
-    private static final Object LOCK = new Object();
-    private static final Object LOCK1 = new Object();
+    protected static final Object LOCK = new Object();
+    protected static final Object LOCK1 = new Object();
     private static final int THREADS_NUMBER = 10000;
 
     public static void main(String[] args) throws InterruptedException {
@@ -97,63 +100,26 @@ public class MainConcurrency {
 //    }
 
 //       join() вместо ожидания
-//        final MainConcurrency mainConcurrency = new MainConcurrency();
-//        List <Thread> threads = new ArrayList <>(THREADS_NUMBER);
-//        for (int i = 0; i < THREADS_NUMBER; i++) {
-//            Thread thread = new Thread(() -> {
-//                for (int j = 0; j < 100; j++) {
-//                    mainConcurrency.inc();
-//                }
-//            });
-//            thread.start();
-//            threads.add(thread);
-//        }
-//        threads.forEach(t -> {
-//            try {
-//                t.join();// вместо ожидания делаем данный меток к каждому патоку
-//            } catch(InterruptedException e) {
-//                e.printStackTrace();
-//            }
-//        });
-//        System.out.println(mainConcurrency.counter);
-//    }
-
-//      deadlock
         final MainConcurrency mainConcurrency = new MainConcurrency();
-        Thread thread1 = new Thread(() -> {
-            synchronized(LOCK) {
-                System.out.println("Thread 1: Holding LOCK...");
-                try {
-                    Thread.sleep(100);
-                } catch(InterruptedException e) {
+        List <Thread> threads = new ArrayList <>(THREADS_NUMBER);
+        for (int i = 0; i < THREADS_NUMBER; i++) {
+            Thread thread = new Thread(() -> {
+                for (int j = 0; j < 100; j++) {
+                    mainConcurrency.inc();
                 }
-                System.out.println("Thread 1: Waiting for LOCK1...");
-                synchronized(LOCK1) {
-                    System.out.println("Thread 1: Holding LOCK and LOCK1...");
-                }
+            });
+            thread.start();
+            threads.add(thread);
+        }
+        threads.forEach(t -> {
+            try {
+                t.join();// вместо ожидания делаем данный меток к каждому патоку
+            } catch(InterruptedException e) {
+                e.printStackTrace();
             }
         });
 
-        Thread thread2 = new Thread(() -> {
-            synchronized(LOCK1) {
-                System.out.println("Thread 2: Holding LOCK1...");
-                try {
-                    Thread.sleep(100);
-                } catch(InterruptedException e) {
-                }
-                System.out.println("Thread 2: Waiting for LOCK...");
-                synchronized(LOCK) {
-                    System.out.println("Thread 2: Holding LOCK1 and LOCK...");
-                }
-            }
-        });
-
-        thread1.start();
-        thread2.start();
-
-        thread1.join();
-        thread2.join();
-
+        DeadlockExample.runDeadlock();
         System.out.println(mainConcurrency.counter);
     }
 
@@ -161,3 +127,37 @@ public class MainConcurrency {
         counter++;
     }
 }
+
+class DeadlockExample {
+    public static void runDeadlock() throws InterruptedException {
+        Thread thread1 = new Thread(() -> {
+            performTask(MainConcurrency.LOCK, MainConcurrency.LOCK1);
+        });
+
+        Thread thread2 = new Thread(() -> {
+            performTask(MainConcurrency.LOCK1, MainConcurrency.LOCK);
+        });
+
+        thread1.start();
+        thread2.start();
+
+        thread1.join();
+        thread2.join();
+    }
+
+    private static void performTask(Object lock1, Object lock2) {
+        synchronized(lock1) {
+            System.out.println("Thread: Holding lock1...");
+            try {
+                Thread.sleep(100);
+            } catch(InterruptedException e) {
+            }
+            System.out.println("Thread: Waiting for lock2...");
+            synchronized(lock2) {
+                System.out.println("Thread: Holding lock1 and lock2...");
+            }
+        }
+    }
+}
+
+
