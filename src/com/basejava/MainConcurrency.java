@@ -1,4 +1,4 @@
-package com.basejava.util;
+package com.basejava;
 
 import java.util.ArrayList;
 import java.util.List;
