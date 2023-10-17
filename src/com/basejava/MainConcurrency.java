@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MainConcurrency {
-    private  int counter;
+    private int counter;
     private static final Object LOCK = new Object();
     private static final int THREADS_NUMBER = 10000;
 
