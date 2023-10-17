@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MainConcurrency {
-    private static int counter;
+    private  int counter;
     private static final Object LOCK = new Object();
     private static final int THREADS_NUMBER = 10000;
 
@@ -25,11 +25,11 @@ public class MainConcurrency {
 //            }
 //        }).start(); Другой способ запуска срэда через Runnable(). Ниже то же самое лямнда.
 
-        new Thread(() -> {
-            System.out.println(Thread.currentThread().getName() + ", " + Thread.currentThread().getState());
-        }).start();
-        System.out.println(thread0.getState());
-
+//        new Thread(() -> {
+//            System.out.println(Thread.currentThread().getName() + ", " + Thread.currentThread().getState());
+//        }).start();
+//        System.out.println(thread0.getState());
+//
 //        for (int i = 0; i < 10000; i++) {
 //            new Thread(() -> {
 //                for (int j = 0; j < 100; j++) {
@@ -99,7 +99,7 @@ public class MainConcurrency {
 
 //       join() вместо ожидания
         final MainConcurrency mainConcurrency = new MainConcurrency();
-        List<Thread> threads = new ArrayList <>(THREADS_NUMBER);
+        List <Thread> threads = new ArrayList <>(THREADS_NUMBER);
         for (int i = 0; i < THREADS_NUMBER; i++) {
             Thread thread = new Thread(() -> {
                 for (int j = 0; j < 100; j++) {
@@ -116,7 +116,7 @@ public class MainConcurrency {
                 e.printStackTrace();
             }
         });
-        System.out.println(counter);
+        System.out.println(mainConcurrency.counter);
     }
 
     private synchronized void inc() {
