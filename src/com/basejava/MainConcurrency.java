@@ -1,12 +1,24 @@
 package com.basejava;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.concurrent.*;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 
 public class MainConcurrency {
     private int counter;
+    private final AtomicInteger atomicCounter = new AtomicInteger();
     protected static final Object LOCK = new Object();
     protected static final Object LOCK1 = new Object();
+    private static final Lock LOCK2 = new ReentrantLock();
+    private static final ThreadLocal <SimpleDateFormat> threadLocal = new ThreadLocal<SimpleDateFormat>() {
+        @Override
+        protected SimpleDateFormat initialValue() {
+            return new SimpleDateFormat();
+        }
+    };
     private static final int THREADS_NUMBER = 10000;
 
     public static void main(String[] args) throws InterruptedException {
@@ -100,31 +112,160 @@ public class MainConcurrency {
 //    }
 
 //       join() вместо ожидания
+//        final MainConcurrency mainConcurrency = new MainConcurrency();
+//        List <Thread> threads = new ArrayList <>(THREADS_NUMBER);
+//        for (int i = 0; i < THREADS_NUMBER; i++) {
+//            Thread thread = new Thread(() -> {
+//                for (int j = 0; j < 100; j++) {
+//                    mainConcurrency.inc();
+//                }
+//            });
+//            thread.start();
+//            threads.add(thread);
+//        }
+//        threads.forEach(t -> {
+//            try {
+//                t.join();// вместо ожидания делаем данный меток к каждому патоку
+//            } catch(InterruptedException e) {
+//                e.printStackTrace();
+//            }
+//        });
+//
+//        DeadlockExample.runDeadlock();
+//        System.out.println(mainConcurrency.counter);
+//    }
+//
+//    private synchronized void inc() {
+//        counter++;
+//    }
+
+//    использование пакета java.util.concurrent.*
+//    CountDownLatch
+//        final MainConcurrency mainConcurrency = new MainConcurrency();
+//        CountDownLatch latch = new CountDownLatch(THREADS_NUMBER);
+//        for (int i = 0; i < THREADS_NUMBER; i++) {
+//            Thread thread = new Thread(() -> {
+//                for (int j = 0; j < 100; j++) {
+//                    mainConcurrency.inc();
+//                }
+//                latch.countDown();
+//            });
+//            thread.start();
+//
+//        }
+//
+//       // DeadlockExample.runDeadlock();
+//        latch.await(10, TimeUnit.SECONDS);
+//        System.out.println(mainConcurrency.counter);
+//    }
+//
+//    private synchronized void inc() {
+//        counter++;
+//    }
+
+//      Executors
+//        final MainConcurrency mainConcurrency = new MainConcurrency();
+//        CountDownLatch latch = new CountDownLatch(THREADS_NUMBER);
+//        ExecutorService executorService = Executors.newCachedThreadPool();
+//        for (int i = 0; i < THREADS_NUMBER; i++) {
+////            executorService.submit(() -> {// submit использует интерфейс Runnable()
+//////            Thread thread = new Thread(() -> {
+////                for (int j = 0; j < 100; j++) {
+////                    mainConcurrency.inc();
+////                }
+////                latch.countDown();
+////                return 5;// submit использует интерфейс Callable()
+////            });
+//            Future <Integer> future = executorService.submit(() -> {// submit Callable() возращает future
+////            Thread thread = new Thread(() -> {
+//                for (int j = 0; j < 100; j++) {
+//                    mainConcurrency.inc();
+//                }
+//                latch.countDown();
+//                return 5;
+//            });
+////            thread.start();
+//
+//        }
+//
+//        // DeadlockExample.runDeadlock();
+//        latch.await(10, TimeUnit.SECONDS);
+//        executorService.shutdown();
+//        System.out.println(mainConcurrency.counter);
+//    }
+//
+//    private synchronized void inc() {
+//        counter++;
+//    }
+
+//      lock,atomicInteger
+//        final MainConcurrency mainConcurrency = new MainConcurrency();
+//        CountDownLatch latch = new CountDownLatch(THREADS_NUMBER);
+//        ExecutorService executorService = Executors.newCachedThreadPool();
+//        for (int i = 0; i < THREADS_NUMBER; i++) {
+//            Future <Integer> future = executorService.submit(() -> {// submit Callable() возращает future
+////            Thread thread = new Thread(() -> {
+//                for (int j = 0; j < 100; j++) {
+//                    mainConcurrency.inc();
+//                }
+//                latch.countDown();
+//                return 5;
+//            });
+////            thread.start();
+//
+//        }
+//
+//        // DeadlockExample.runDeadlock();
+//        latch.await(10, TimeUnit.SECONDS);
+//        executorService.shutdown();
+////        System.out.println(mainConcurrency.counter);
+//        System.out.println(mainConcurrency.atomicCounter.get());
+//    }
+//
+//    private void inc() {
+////        lock.lock();
+////        try {
+//        atomicCounter.incrementAndGet();
+////            counter++;
+////        } finally {
+////            lock.unlock();
+////        }
+//    }
+
+//      SimpleDateFormat
         final MainConcurrency mainConcurrency = new MainConcurrency();
-        List <Thread> threads = new ArrayList <>(THREADS_NUMBER);
+        CountDownLatch latch = new CountDownLatch(THREADS_NUMBER);
+        ExecutorService executorService = Executors.newCachedThreadPool();
         for (int i = 0; i < THREADS_NUMBER; i++) {
-            Thread thread = new Thread(() -> {
+            Future <Integer> future = executorService.submit(() -> {// submit Callable() возращает future
+//            Thread thread = new Thread(() -> {
                 for (int j = 0; j < 100; j++) {
                     mainConcurrency.inc();
+                    System.out.println(threadLocal.get().format(new Date()));
                 }
+                latch.countDown();
+                return 5;
             });
-            thread.start();
-            threads.add(thread);
-        }
-        threads.forEach(t -> {
-            try {
-                t.join();// вместо ожидания делаем данный меток к каждому патоку
-            } catch(InterruptedException e) {
-                e.printStackTrace();
-            }
-        });
+//            thread.start();
 
-        DeadlockExample.runDeadlock();
-        System.out.println(mainConcurrency.counter);
+        }
+
+        // DeadlockExample.runDeadlock();
+        latch.await(10, TimeUnit.SECONDS);
+        executorService.shutdown();
+//        System.out.println(mainConcurrency.counter);
+        System.out.println(mainConcurrency.atomicCounter.get());
     }
 
-    private synchronized void inc() {
-        counter++;
+    private void inc() {
+//        lock.lock();
+//        try {
+        atomicCounter.incrementAndGet();
+//            counter++;
+//        } finally {
+//            lock.unlock();
+//        }
+
     }
 }
 
