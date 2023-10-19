@@ -16,16 +16,23 @@ public class MainStream {
     }
 
     public static int minValue(int[] values) {
-        return Arrays.stream(values).distinct().sorted().reduce(0, (a, b) -> a * 10 + b);
+        return Arrays.stream(values)
+                .distinct()
+                .sorted()
+                .reduce(0, (a, b) -> a * 10 + b);
     }
 
     public static int[] minValueArray(int[] values) {
-        return Arrays.stream(values).distinct().sorted().toArray();
+        return Arrays.stream(values)
+                .distinct()
+                .sorted()
+                .toArray();
     }
 
     public static List <Integer> oddOrEven(List <Integer> integers, int result) {
         int sumOfDigits = String.valueOf(result).chars().map(Character::getNumericValue).sum();
-        return integers.stream().filter(number -> (sumOfDigits % 2 == 0) != (number % 2 == 0))
+        return integers.stream()
+                .filter(number -> (sumOfDigits % 2 == 0) != (number % 2 == 0))
                 .collect(Collectors.toList());
     }
 }
