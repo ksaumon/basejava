@@ -22,7 +22,7 @@ public class MainStream {
     }
 
     public static List <Integer> oddOrEven(List <Integer> integers) {
-        int sumOfDigits = String.valueOf(integers).chars().map(Character::getNumericValue).sum();
+        int sumOfDigits = integers.stream().mapToInt(Integer::intValue).sum();
         return integers.stream()
                 .filter(number -> (sumOfDigits % 2 == 0) != (number % 2 == 0))
                 .collect(Collectors.toList());
