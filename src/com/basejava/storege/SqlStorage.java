@@ -4,12 +4,14 @@ import com.basejava.exception.NotExistStorageException;
 import com.basejava.exception.StorageException;
 import com.basejava.model.Resume;
 import com.basejava.sql.ConnectionFactory;
+import com.basejava.sql.SqlHelper;
 
 import java.sql.*;
 import java.util.List;
 
 public class SqlStorage implements Storage {
     public final ConnectionFactory connectionFactory;
+    public final SqlHelper sqlHelper;
 
 //    public SqlStorage(String dbUrl, String dbUser, String dbPassword) {
 //        connectionFactory = new ConnectionFactory() {
@@ -21,17 +23,12 @@ public class SqlStorage implements Storage {
 //    }
 
     public SqlStorage(String dbUrl, String dbUser, String dbPassword) {
-        connectionFactory = () -> DriverManager.getConnection(dbUrl, dbUser, dbPassword);
+        sqlHelper = new SqlHelper(() -> DriverManager.getConnection(dbUrl, dbUser, dbPassword));
     }
 
     @Override
     public void clear() {
-        try(Connection conn = connectionFactory.getConnection();
-            PreparedStatement ps = conn.prepareStatement("DELETE FROM resume")) {
-            ps.execute();
-        } catch(SQLException e) {
-            throw new StorageException(e);
-        }
+        sqlHelper.execute("DELETE FROM resume");
     }
 
     @Override
