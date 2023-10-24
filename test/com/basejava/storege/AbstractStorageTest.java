@@ -1,5 +1,6 @@
 package com.basejava.storege;
 
+import com.basejava.Config;
 import com.basejava.exception.ExistStorageException;
 import com.basejava.exception.NotExistStorageException;
 import com.basejava.model.*;
@@ -15,7 +16,7 @@ import java.util.List;
 import static org.junit.Assert.assertEquals;
 
 public abstract class AbstractStorageTest {
-    protected static final File STORAGE_DIR = new File("C:\\Users\\semen\\basejava\\storage");
+    protected static final File STORAGE_DIR = Config.get().getStorageDir();
     protected final Storage storage;
     private static final String UUID_NOT_EXIST = "dummy";
     private static final String UUID_1 = "uuid1";
