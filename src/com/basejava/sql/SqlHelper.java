@@ -1,7 +1,5 @@
 package com.basejava.sql;
 
-import com.basejava.exception.StorageException;
-
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
@@ -14,11 +12,15 @@ public class SqlHelper {
     }
 
     public void execute(String sql) {
+        execute(sql, PreparedStatement::execute);
+    }
+
+    public <T> T execute(String sql, SqlExecutor <T> executor) {
         try(Connection conn = connectionFactory.getConnection();
             PreparedStatement ps = conn.prepareStatement(sql)) {
-            ps.execute();
+            return executor.execute(ps);
         } catch(SQLException e) {
-            throw new StorageException(e);
+            throw ExceptionUtil.convertException(e);
         }
     }
 }
