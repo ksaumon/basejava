@@ -103,24 +103,25 @@ public class SqlStorage implements Storage {
     @Override
     public List <Resume> getAllSorted() {
         return sqlHelper.execute("" +
-                "   SELECT * FROM resume r" +
-                "LEFT JOIN contact c ON r.uuid = c.resume_uuid" +
-                " ORDER BY full_name, uuid", ps -> {
-            ResultSet rs = ps.executeQuery();
-            Map <String, Resume> map = new LinkedHashMap <>();
-            while (rs.next()) {
-                String uuid = rs.getString("uuid");
-                Resume resume = map.get(uuid);
-                if (resume == null) {
-                    resume = new Resume(uuid, rs.getString("full_name"));
-                    map.put(uuid, resume);
-                }
-                String value = rs.getString("value");
-                ContactType type = ContactType.valueOf(rs.getString("type"));
-                resume.addContact(type, value);
-            }
-            return new ArrayList <>(map.values());
-        });
+                        "   SELECT * FROM resume r" +
+                        "LEFT JOIN contact c ON r.uuid = c.resume_uuid" +
+                        " ORDER BY full_name, uuid",
+                ps -> {
+                    ResultSet rs = ps.executeQuery();
+                    Map <String, Resume> map = new LinkedHashMap <>();
+                    while (rs.next()) {
+                        String uuid = rs.getString("uuid");
+                        Resume resume = map.get(uuid);
+                        if (resume == null) {
+                            resume = new Resume(uuid, rs.getString("full_name"));
+                            map.put(uuid, resume);
+                        }
+                        String value = rs.getString("value");
+                        ContactType type = ContactType.valueOf(rs.getString("type"));
+                        resume.addContact(type, value);
+                    }
+                    return new ArrayList <>(map.values());
+                });
     }
 
     @Override
