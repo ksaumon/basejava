@@ -7,6 +7,7 @@ import com.basejava.sql.SqlHelper;
 
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -39,7 +40,11 @@ public class SqlStorage implements Storage {
                 ps.setString(2, r.getUuid());
                 ps.execute();
             }
-            deleteContacts(conn, r);
+            sqlHelper.execute("DELETE FROM contact WHERE resume_uuid=?", ps -> {
+                ps.setString(1, r.getUuid());
+                ps.execute();
+                return null;
+            });
             insertContacts(conn, r);
             return null;
         });
@@ -97,13 +102,24 @@ public class SqlStorage implements Storage {
 
     @Override
     public List <Resume> getAllSorted() {
-        return sqlHelper.execute("SELECT * FROM resume r ORDER BY full_name,uuid", ps -> {
+        return sqlHelper.execute("" +
+                "   SELECT * FROM resume r" +
+                "LEFT JOIN contact c ON r.uuid = c.resume_uuid" +
+                " ORDER BY full_name, uuid", ps -> {
             ResultSet rs = ps.executeQuery();
-            List <Resume> resumes = new ArrayList <>();
+            Map <String, Resume> map = new LinkedHashMap <>();
             while (rs.next()) {
-                resumes.add(new Resume(rs.getString("uuid"), rs.getString("full_name")));
+                String uuid = rs.getString("uuid");
+                Resume resume = map.get(uuid);
+                if (resume == null) {
+                    resume = new Resume(uuid, rs.getString("full_name"));
+                    map.put(uuid, resume);
+                }
+                String value = rs.getString("value");
+                ContactType type = ContactType.valueOf(rs.getString("type"));
+                resume.addContact(type, value);
             }
-            return resumes;
+            return new ArrayList <>(map.values());
         });
     }
 
@@ -112,14 +128,6 @@ public class SqlStorage implements Storage {
         return sqlHelper.execute("SELECT count(*) FROM resume", st -> {
             ResultSet rs = st.executeQuery();
             return rs.next() ? rs.getInt(1) : 0;
-        });
-    }
-
-    private void deleteContacts(Connection conn, Resume r) {
-        sqlHelper.execute("DELETE FROM contact WHERE resume_uuid=?", ps -> {
-            ps.setString(1, r.getUuid());
-            ps.execute();
-            return null;
         });
     }
 
