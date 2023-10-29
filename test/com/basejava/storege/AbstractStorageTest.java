@@ -3,16 +3,14 @@ package com.basejava.storege;
 import com.basejava.Config;
 import com.basejava.exception.ExistStorageException;
 import com.basejava.exception.NotExistStorageException;
-import com.basejava.model.*;
+import com.basejava.model.ContactType;
+import com.basejava.model.Organization;
+import com.basejava.model.Resume;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.io.File;
-import java.time.Month;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 import static org.junit.Assert.assertEquals;
 
@@ -35,7 +33,7 @@ public abstract class AbstractStorageTest {
         RESUME_2 = new Resume(UUID_2, "Name2");
         RESUME_3 = new Resume(UUID_3, "Name3");
         RESUME_4 = new Resume(UUID_4, "Name4");
-        //  createAndFillResume("uuid1", "Name1");
+        createAndFillResume("uuid1", "Name1");
     }
 
     protected AbstractStorageTest(Storage storage) {
@@ -48,24 +46,24 @@ public abstract class AbstractStorageTest {
         resume.addContact(ContactType.PHONE, "+7(921) 855-0482");
         resume.addContact(ContactType.HOME_PHONE, "+7(345) 855-0482");
         resume.addContact(ContactType.MOBILE, "+7(921) 855-0482");
-        resume.addContact(ContactType.SKYPE, "john.doe@example.com");
-        resume.addContact(ContactType.MAIL, "john.doe@example.com");
-        resume.addContact(ContactType.STATCKOVERFLOW, "john.doe@example.com");
-        resume.addContact(ContactType.HOME_PAGE, "john.doe@example.com");
-        resume.addContact(ContactType.LINKEDIN, "linkedin.com/in/johndoe");
-        resume.addContact(ContactType.GITHUB, "github.com/johndoe");
-        resume.addSection(SectionType.OBJECTIVE, new TextSection("Ведущий стажировок и корпоративного обучения"));
-        resume.addSection(SectionType.PERSONAL, new TextSection("Аналитический склад ума"));
-        resume.addSection(SectionType.ACHIEVEMENT, new TextSection("Организация команды"));
-        resume.addSection(SectionType.QUALIFICATIONS, new TextSection("JEE AS: GlassFish"));
-        organizations.add(new Organization("Wrike", "https://www.wrike.com/",
-                List.of(new Period(2014, Month.OCTOBER, 2016, Month.JANUARY, "Старший разработчик" +
-                        "(backend)", "Проектирование и разработка онлайн платформы управления проектами"))));
-        resume.addSection(SectionType.EXPERIENCE, new OrganizationSection(organizations));
-        organizations.add(new Organization("Coursera", "https://www.coursera.org/course/progfun",
-                List.of(new Period(2013, Month.MARCH, 2013, Month.MAY, "'Functional Programming" +
-                        "Principles in Scala' by Martin Odersky", ""))));
-        resume.addSection(SectionType.EDUCATION, new OrganizationSection(organizations));
+//        resume.addContact(ContactType.SKYPE, "john.doe@example.com");
+//        resume.addContact(ContactType.MAIL, "john.doe@example.com");
+//        resume.addContact(ContactType.STATCKOVERFLOW, "john.doe@example.com");
+//        resume.addContact(ContactType.HOME_PAGE, "john.doe@example.com");
+//        resume.addContact(ContactType.LINKEDIN, "linkedin.com/in/johndoe");
+//        resume.addContact(ContactType.GITHUB, "github.com/johndoe");
+//        resume.addSection(SectionType.OBJECTIVE, new TextSection("Ведущий стажировок и корпоративного обучения"));
+//        resume.addSection(SectionType.PERSONAL, new TextSection("Аналитический склад ума"));
+//        resume.addSection(SectionType.ACHIEVEMENT, new TextSection("Организация команды"));
+//        resume.addSection(SectionType.QUALIFICATIONS, new TextSection("JEE AS: GlassFish"));
+//        organizations.add(new Organization("Wrike", "https://www.wrike.com/",
+//                List.of(new Period(2014, Month.OCTOBER, 2016, Month.JANUARY, "Старший разработчик" +
+//                        "(backend)", "Проектирование и разработка онлайн платформы управления проектами"))));
+//        resume.addSection(SectionType.EXPERIENCE, new OrganizationSection(organizations));
+//        organizations.add(new Organization("Coursera", "https://www.coursera.org/course/progfun",
+//                List.of(new Period(2013, Month.MARCH, 2013, Month.MAY, "'Functional Programming" +
+//                        "Principles in Scala' by Martin Odersky", ""))));
+//        resume.addSection(SectionType.EDUCATION, new OrganizationSection(organizations));
     }
 
     @Before
@@ -90,6 +88,8 @@ public abstract class AbstractStorageTest {
     @Test
     public void update() {
         Resume newResume = new Resume(UUID_1, "New Name");
+        RESUME_1.addContact(ContactType.HOME_PHONE, "+7(345) 555-0482");
+        RESUME_1.addContact(ContactType.MOBILE, "+7(921) 333-0482");
         storage.update(newResume);
         assertEquals(newResume, storage.get(UUID_1));
     }
@@ -127,7 +127,9 @@ public abstract class AbstractStorageTest {
     public void getAllSorted() {
         List <Resume> list = storage.getAllSorted();
         assertEquals(3, list.size());
-        assertEquals(list, Arrays.asList(RESUME_1, RESUME_2, RESUME_3));
+        List <Resume> sortedResumes = Arrays.asList(RESUME_1, RESUME_2, RESUME_3);
+        Collections.sort(sortedResumes);
+        assertEquals(sortedResumes, list);
     }
 
     @Test
