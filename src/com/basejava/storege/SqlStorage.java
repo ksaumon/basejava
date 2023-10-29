@@ -99,9 +99,10 @@ public class SqlStorage implements Storage {
     @Override
     public List <Resume> getAllSorted() {
         return sqlHelper.execute("" +
-                        "   SELECT * FROM resume r" +
-                        "LEFT JOIN contact c ON r.uuid = c.resume_uuid" +
-                        " ORDER BY full_name, uuid",
+                        "   SELECT r.uuid, r.full_name, c.type, c.value " +
+                        "     FROM resume r " +
+                        "LEFT JOIN contact c ON r.uuid = c.resume_uuid " +
+                        " ORDER BY r.full_name, r.uuid",
                 ps -> {
                     ResultSet rs = ps.executeQuery();
                     Map <String, Resume> map = new LinkedHashMap <>();

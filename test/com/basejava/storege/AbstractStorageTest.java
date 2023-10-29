@@ -34,6 +34,7 @@ public abstract class AbstractStorageTest {
         RESUME_3 = new Resume(UUID_3, "Name3");
         RESUME_4 = new Resume(UUID_4, "Name4");
         createAndFillResume("uuid1", "Name1");
+        createAndFillResume("uuid4", "Name4");
     }
 
     protected AbstractStorageTest(Storage storage) {
@@ -46,12 +47,12 @@ public abstract class AbstractStorageTest {
         resume.addContact(ContactType.PHONE, "+7(921) 855-0482");
         resume.addContact(ContactType.HOME_PHONE, "+7(345) 855-0482");
         resume.addContact(ContactType.MOBILE, "+7(921) 855-0482");
-//        resume.addContact(ContactType.SKYPE, "john.doe@example.com");
-//        resume.addContact(ContactType.MAIL, "john.doe@example.com");
-//        resume.addContact(ContactType.STATCKOVERFLOW, "john.doe@example.com");
-//        resume.addContact(ContactType.HOME_PAGE, "john.doe@example.com");
-//        resume.addContact(ContactType.LINKEDIN, "linkedin.com/in/johndoe");
-//        resume.addContact(ContactType.GITHUB, "github.com/johndoe");
+        resume.addContact(ContactType.SKYPE, "john.doe@example.com");
+        resume.addContact(ContactType.MAIL, "john.doe@example.com");
+        resume.addContact(ContactType.STATCKOVERFLOW, "john.doe@example.com");
+        resume.addContact(ContactType.HOME_PAGE, "john.doe@example.com");
+        resume.addContact(ContactType.LINKEDIN, "linkedin.com/in/johndoe");
+        resume.addContact(ContactType.GITHUB, "github.com/johndoe");
 //        resume.addSection(SectionType.OBJECTIVE, new TextSection("Ведущий стажировок и корпоративного обучения"));
 //        resume.addSection(SectionType.PERSONAL, new TextSection("Аналитический склад ума"));
 //        resume.addSection(SectionType.ACHIEVEMENT, new TextSection("Организация команды"));
@@ -90,6 +91,9 @@ public abstract class AbstractStorageTest {
         Resume newResume = new Resume(UUID_1, "New Name");
         RESUME_1.addContact(ContactType.HOME_PHONE, "+7(345) 555-0482");
         RESUME_1.addContact(ContactType.MOBILE, "+7(921) 333-0482");
+        RESUME_3.addContact(ContactType.SKYPE, "john.doe@example.com");
+        RESUME_3.addContact(ContactType.MAIL, "john.doe@example.com");
+        RESUME_3.addContact(ContactType.STATCKOVERFLOW, "john.doe@example.com");
         storage.update(newResume);
         assertEquals(newResume, storage.get(UUID_1));
     }
@@ -129,7 +133,7 @@ public abstract class AbstractStorageTest {
         assertEquals(3, list.size());
         List <Resume> sortedResumes = Arrays.asList(RESUME_1, RESUME_2, RESUME_3);
         Collections.sort(sortedResumes);
-        assertEquals(sortedResumes, list);
+        assertEquals(list, sortedResumes);
     }
 
     @Test
