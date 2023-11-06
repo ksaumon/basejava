@@ -1,16 +1,21 @@
 package com.basejava.storege;
 
 import com.basejava.Config;
+import com.basejava.ResumeTestData;
 import com.basejava.exception.ExistStorageException;
 import com.basejava.exception.NotExistStorageException;
 import com.basejava.model.ContactType;
-import com.basejava.model.Organization;
 import com.basejava.model.Resume;
+import com.basejava.model.SectionType;
+import com.basejava.model.TextSection;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.io.File;
-import java.util.*;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+import java.util.UUID;
 
 import static org.junit.Assert.assertEquals;
 
@@ -23,7 +28,7 @@ public abstract class AbstractStorageTest {
     private static final String UUID_3 = UUID.randomUUID().toString();
     private static final String UUID_4 = UUID.randomUUID().toString();
 
-    private static final Resume RESUME_1;
+    public static final Resume RESUME_1;
     private static final Resume RESUME_2;
     private static final Resume RESUME_3;
     private static final Resume RESUME_4;
@@ -33,26 +38,26 @@ public abstract class AbstractStorageTest {
         RESUME_2 = new Resume(UUID_2, "Name2");
         RESUME_3 = new Resume(UUID_3, "Name3");
         RESUME_4 = new Resume(UUID_4, "Name4");
-        createAndFillResume("uuid1", "Name1");
-        createAndFillResume("uuid4", "Name4");
+        ResumeTestData.createFilledResume("uuid1", "Name1");
+        ResumeTestData.createFilledResume("uuid3", "Name3");
     }
 
     protected AbstractStorageTest(Storage storage) {
         this.storage = storage;
     }
 
-    protected static void createAndFillResume(String uuid, String fullName) {
-        Resume resume = new Resume(uuid, fullName);
-        List <Organization> organizations = new ArrayList <>();
-        resume.addContact(ContactType.PHONE, "+7(921) 855-0482");
-        resume.addContact(ContactType.HOME_PHONE, "+7(345) 855-0482");
-        resume.addContact(ContactType.MOBILE, "+7(921) 855-0482");
-        resume.addContact(ContactType.SKYPE, "john.doe@example.com");
-        resume.addContact(ContactType.MAIL, "john.doe@example.com");
-        resume.addContact(ContactType.STATCKOVERFLOW, "john.doe@example.com");
-        resume.addContact(ContactType.HOME_PAGE, "john.doe@example.com");
-        resume.addContact(ContactType.LINKEDIN, "linkedin.com/in/johndoe");
-        resume.addContact(ContactType.GITHUB, "github.com/johndoe");
+//    protected static void createAndFillResume(String uuid, String fullName) {
+//        Resume resume = new Resume(uuid, fullName);
+//        List <Organization> organizations = new ArrayList<>();
+//        resume.addContact(ContactType.PHONE, "+7(921) 855-0482");
+//        resume.addContact(ContactType.HOME_PHONE, "+7(345) 855-0482");
+//        resume.addContact(ContactType.MOBILE, "+7(921) 855-0482");
+//        resume.addContact(ContactType.SKYPE, "john.doe@example.com");
+//        resume.addContact(ContactType.MAIL, "john.doe@example.com");
+//        resume.addContact(ContactType.STATCKOVERFLOW, "john.doe@example.com");
+//        resume.addContact(ContactType.HOME_PAGE, "john.doe@example.com");
+//        resume.addContact(ContactType.LINKEDIN, "linkedin.com/in/johndoe");
+//        resume.addContact(ContactType.GITHUB, "github.com/johndoe");
 //        resume.addSection(SectionType.OBJECTIVE, new TextSection("Ведущий стажировок и корпоративного обучения"));
 //        resume.addSection(SectionType.PERSONAL, new TextSection("Аналитический склад ума"));
 //        resume.addSection(SectionType.ACHIEVEMENT, new TextSection("Организация команды"));
@@ -65,7 +70,7 @@ public abstract class AbstractStorageTest {
 //                List.of(new Period(2013, Month.MARCH, 2013, Month.MAY, "'Functional Programming" +
 //                        "Principles in Scala' by Martin Odersky", ""))));
 //        resume.addSection(SectionType.EDUCATION, new OrganizationSection(organizations));
-    }
+//    }
 
     @Before
     public void setUp() {
@@ -91,9 +96,9 @@ public abstract class AbstractStorageTest {
         Resume newResume = new Resume(UUID_1, "New Name");
         RESUME_1.addContact(ContactType.HOME_PHONE, "+7(345) 555-0482");
         RESUME_1.addContact(ContactType.MOBILE, "+7(921) 333-0482");
+        RESUME_1.addSection(SectionType.PERSONAL, new TextSection("Аналитический склад ума"));
         RESUME_3.addContact(ContactType.SKYPE, "john.doe@example.com");
         RESUME_3.addContact(ContactType.MAIL, "john.doe@example.com");
-        RESUME_3.addContact(ContactType.STATCKOVERFLOW, "john.doe@example.com");
         storage.update(newResume);
         assertEquals(newResume, storage.get(UUID_1));
     }
@@ -129,9 +134,9 @@ public abstract class AbstractStorageTest {
 
     @Test
     public void getAllSorted() {
-        List <Resume> list = storage.getAllSorted();
+        List<Resume> list = storage.getAllSorted();
         assertEquals(3, list.size());
-        List <Resume> sortedResumes = Arrays.asList(RESUME_1, RESUME_2, RESUME_3);
+        List<Resume> sortedResumes = Arrays.asList(RESUME_1, RESUME_2, RESUME_3);
         Collections.sort(sortedResumes);
         assertEquals(list, sortedResumes);
     }

@@ -11,13 +11,13 @@ import java.util.UUID;
 
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
-public class Resume implements Comparable <Resume>, Serializable {
+public class Resume implements Comparable<Resume>, Serializable {
     private static final long serialVersionUID = 1L;
     private String uuid;
     private String fullName;
 
-    private Map <ContactType, String> contacts;
-    private Map <SectionType, Section> sections;
+    private Map<ContactType, String> contacts;
+    private Map<SectionType, Section> sections;
 
     public Resume() {
     }
@@ -31,8 +31,8 @@ public class Resume implements Comparable <Resume>, Serializable {
         Objects.requireNonNull(fullName, "fullName must not bu null");
         this.uuid = uuid;
         this.fullName = fullName;
-        this.contacts = new EnumMap <>(ContactType.class);
-        this.sections = new EnumMap <>(SectionType.class);
+        this.contacts = new EnumMap<>(ContactType.class);
+        this.sections = new EnumMap<>(SectionType.class);
     }
 
     public String getUuid() {
@@ -43,11 +43,11 @@ public class Resume implements Comparable <Resume>, Serializable {
         return fullName;
     }
 
-    public Map <ContactType, String> getContacts() {
+    public Map<ContactType, String> getContacts() {
         return contacts;
     }
 
-    public Map <SectionType, Section> getSections() {
+    public Map<SectionType, Section> getSections() {
         return sections;
     }
 

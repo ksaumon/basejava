@@ -9,7 +9,7 @@ import java.util.List;
 public class ResumeTestData {
     public static Resume createFilledResume(String uuid, String fullName) {
         Resume resume = new Resume(uuid, fullName);
-        List <Organization> organizations = new ArrayList <>();
+        List<Organization> organizations = new ArrayList<>();
         resume.addContact(ContactType.PHONE, "+7(921) 855-0482");
         resume.addContact(ContactType.HOME_PHONE, "+7(345) 855-0482");
         resume.addContact(ContactType.MOBILE, "+7(921) 855-0482");
