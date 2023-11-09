@@ -98,19 +98,6 @@ public abstract class AbstractStorageTest {
         RESUME_1.setSection(SectionType.PERSONAL, new TextSection("Аналитический склад ума"));
         RESUME_1.setSection(SectionType.OBJECTIVE, new TextSection("Ведущий стажировок и" +
                 "корпоративного обучения"));
-//        RESUME_1.setSection(SectionType.EXPERIENCE,
-//                new OrganizationSection(
-//                        List.of(new Organization("Organization11", "http://Organization11.ru",
-//                                new Period(2005, Month.JANUARY, "position1", "content1"),
-//                                new Period(2001, Month.MARCH, 2005, Month.JANUARY,
-//                                        "position2", "content2")))));
-//        RESUME_1.setSection(SectionType.EDUCATION,
-//                new OrganizationSection(
-//                        List.of(new Organization("Institute", null,
-//                                new Period(1996, Month.JANUARY, 2000, Month.DECEMBER,
-//                                        "aspirant", null), new Period(2001, Month.MARCH,
-//                                2005, Month.JANUARY, "student", "IT facultet")),
-//                        new Organization("Organization12", "http://Organization12.ru"))));
         RESUME_3.setContact(ContactType.SKYPE, "john.doe@example.com");
         RESUME_3.setContact(ContactType.MAIL, "john.doe@example.com");
         storage.update(newResume);
