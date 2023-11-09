@@ -3,34 +3,36 @@ package com.basejava.model;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
 @XmlAccessorType(XmlAccessType.FIELD)
 public class Organization implements Serializable {
     private static final long serialVersionUID = 1L;
-    private String name;
-    private String website;
-    private List <Period> periods;
+    public static final Organization EMPTY = new Organization("", "", Period.EMPTY);
+    private Link website;
+    private List<Period> periods = new ArrayList<>();
 
-    public Organization(Organization organization) {
+    public Organization() {
     }
 
-    public Organization(String name, String website, List <Period> periods) {
-        this.name = name;
+    public Organization(String name, String url, Period... periods) {
+        this(new Link(name, url), Arrays.asList(periods));
+    }
+
+
+    public Organization(Link website, List<Period> periods) {
         this.website = website;
         this.periods = periods;
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public String getWebsite() {
+    public Link getWebsite() {
         return website;
     }
 
-    public List <Period> getPeriods() {
+    public List<Period> getPeriods() {
         return periods;
     }
 
@@ -39,19 +41,18 @@ public class Organization implements Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Organization that = (Organization) o;
-        return name.equals(that.name) && website.equals(that.website) && periods.equals(that.periods);
+        return Objects.equals(website, that.website) && Objects.equals(periods, that.periods);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(name, website, periods);
+        return Objects.hash(website, periods);
     }
 
     @Override
     public String toString() {
         return "Organization{" +
-                "name='" + name + '\'' +
-                ", website='" + website + '\'' +
+                "website='" + website + '\'' +
                 ", periods=" + periods +
                 '}';
     }

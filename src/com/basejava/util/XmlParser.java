@@ -21,7 +21,7 @@ public class XmlParser {
 //            marshaller.setProperty(Marshaller.JAXB_FRAGMENT, true);
 
             unmarshaller = ctx.createUnmarshaller();
-        } catch(JAXBException e) {
+        } catch (JAXBException e) {
             throw new IllegalStateException(e);
         }
     }
@@ -29,7 +29,7 @@ public class XmlParser {
     public <T> T unmarshall(Reader reader) {
         try {
             return (T) unmarshaller.unmarshal(reader);
-        } catch(JAXBException e) {
+        } catch (JAXBException e) {
             throw new IllegalStateException(e);
         }
     }
@@ -37,7 +37,7 @@ public class XmlParser {
     public void marshall(Object instance, Writer writer) {
         try {
             marshaller.marshal(instance, writer);
-        } catch(JAXBException e) {
+        } catch (JAXBException e) {
             throw new IllegalStateException(e);
         }
     }

@@ -13,6 +13,7 @@ import static com.basejava.util.DateUtil.of;
 @XmlAccessorType(XmlAccessType.FIELD)
 public class Period implements Serializable {
     private static final long serialVersionUID = 1L;
+    public static final Period EMPTY = new Period();
     private LocalDate startDate;
     private LocalDate endDate;
     private String title;

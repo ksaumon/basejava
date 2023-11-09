@@ -10,12 +10,13 @@ import java.util.List;
 import java.util.Map;
 
 public class DataStreamSerializer implements StreamSerializer {
+
     @Override
     public void doWrite(Resume r, OutputStream os) throws IOException {
-        try(DataOutputStream dos = new DataOutputStream(os)) {
+        try (DataOutputStream dos = new DataOutputStream(os)) {
             dos.writeUTF(r.getUuid());
             dos.writeUTF(r.getFullName());
-            Map <ContactType, String> contacts = r.getContacts();
+            Map<ContactType, String> contacts = r.getContacts();
             writeCollection(dos, contacts.entrySet(), entry -> {
                 dos.writeUTF(entry.getKey().name());
                 dos.writeUTF(entry.getValue());
@@ -25,7 +26,7 @@ public class DataStreamSerializer implements StreamSerializer {
                 SectionType type = entry.getKey();
                 Section section = entry.getValue();
                 dos.writeUTF(type.name());
-                switch(type) {
+                switch (type) {
                     case PERSONAL:
                     case OBJECTIVE:
                         dos.writeUTF(((TextSection) section).getContent());
@@ -37,13 +38,13 @@ public class DataStreamSerializer implements StreamSerializer {
                     case EXPERIENCE:
                     case EDUCATION:
                         writeCollection(dos, ((OrganizationSection) section).getOrganizations(), org -> {
-                            dos.writeUTF(org.getWebsite());
-                            dos.writeUTF(org.getWebsite());
-                            writeCollection(dos, org.getPeriods(), periods -> {
-                                writeLocalDate(dos, periods.getStartDate());
-                                writeLocalDate(dos, periods.getEndDate());
-                                dos.writeUTF(periods.getTitle());
-                                dos.writeUTF(periods.getDescription());
+                            dos.writeUTF(org.getWebsite().getName());
+                            dos.writeUTF(org.getWebsite().getUrl());
+                            writeCollection(dos, org.getPeriods(), position -> {
+                                writeLocalDate(dos, position.getStartDate());
+                                writeLocalDate(dos, position.getEndDate());
+                                dos.writeUTF(position.getTitle());
+                                dos.writeUTF(position.getDescription());
                             });
                         });
                         break;
@@ -63,21 +64,21 @@ public class DataStreamSerializer implements StreamSerializer {
 
     @Override
     public Resume doRead(InputStream is) throws IOException {
-        try(DataInputStream dis = new DataInputStream(is)) {
+        try (DataInputStream dis = new DataInputStream(is)) {
             String uuid = dis.readUTF();
             String fullName = dis.readUTF();
             Resume resume = new Resume(uuid, fullName);
-            readItems(dis, () -> resume.addContact(ContactType.valueOf(dis.readUTF()), dis.readUTF()));
+            readItems(dis, () -> resume.setContact(ContactType.valueOf(dis.readUTF()), dis.readUTF()));
             readItems(dis, () -> {
                 SectionType sectionType = SectionType.valueOf(dis.readUTF());
-                resume.addSection(sectionType, readSection(dis, sectionType));
+                resume.setSection(sectionType, readSection(dis, sectionType));
             });
             return resume;
         }
     }
 
     private Section readSection(DataInputStream dis, SectionType sectionType) throws IOException {
-        switch(sectionType) {
+        switch (sectionType) {
             case PERSONAL:
             case OBJECTIVE:
                 return new TextSection(dis.readUTF());
@@ -86,19 +87,21 @@ public class DataStreamSerializer implements StreamSerializer {
                 return new ListSection(readList(dis, dis::readUTF));
             case EXPERIENCE:
             case EDUCATION:
-                List <Organization> educationOrganizations = new ArrayList <>();
-                educationOrganizations.add(new Organization(dis.readUTF(), dis.readUTF(),
-                        (readList(dis, () -> new Period(
-                                readLocalDate(dis), readLocalDate(dis), dis.readUTF(), dis.readUTF())))));
-                return new OrganizationSection(educationOrganizations);
+                return new OrganizationSection(
+                        readList(dis, () -> new Organization(
+                                new Link(dis.readUTF(), dis.readUTF()),
+                                readList(dis, () -> new Period(
+                                        readLocalDate(dis), readLocalDate(dis), dis.readUTF(), dis.readUTF()
+                                ))
+                        )));
             default:
                 throw new IllegalStateException();
         }
     }
 
-    private <T> List <T> readList(DataInputStream dis, ElementReader <T> reader) throws IOException {
+    private <T> List<T> readList(DataInputStream dis, ElementReader<T> reader) throws IOException {
         int size = dis.readInt();
-        List <T> list = new ArrayList <>(size);
+        List<T> list = new ArrayList<>(size);
         for (int i = 0; i < size; i++) {
             list.add(reader.read());
         }
@@ -124,7 +127,8 @@ public class DataStreamSerializer implements StreamSerializer {
         }
     }
 
-    private <T> void writeCollection(DataOutputStream dos, Collection <T> collection, ElementWriter <T> writer) throws IOException {
+    private <T> void writeCollection(DataOutputStream dos, Collection<T> collection, ElementWriter<T> writer)
+            throws IOException {
         dos.writeInt(collection.size());
         for (T item : collection) {
             writer.write(item);
