@@ -1,16 +1,20 @@
 package com.basejava.util;
 
-import javax.xml.bind.annotation.adapters.XmlAdapter;
+import com.google.gson.*;
+
+import java.lang.reflect.Type;
 import java.time.LocalDate;
 
-public class LocalDateAdapter extends XmlAdapter<String, LocalDate> {
+public class LocalDateAdapter implements JsonSerializer<LocalDate>, JsonDeserializer<LocalDate> {
+
     @Override
-    public LocalDate unmarshal(String str) throws Exception {
-        return LocalDate.parse(str);
+    public LocalDate deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context)
+            throws JsonParseException {
+        return LocalDate.parse(json.getAsString());
     }
 
     @Override
-    public String marshal(LocalDate ld) throws Exception {
-        return ld.toString();
+    public JsonElement serialize(LocalDate src, Type typeOfSrc, JsonSerializationContext context) {
+        return new JsonPrimitive(src.toString());
     }
 }

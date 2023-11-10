@@ -24,12 +24,13 @@ public class ResumeServlet extends HttpServlet {
         storage = Config.get().getStorage();
     }
 
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws javax.servlet.ServletException, IOException {
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws javax.servlet.ServletException, IOException {
         request.setCharacterEncoding("UTF-8");
         String uuid = request.getParameter("uuid");
         String fullName = request.getParameter("fullName");
 
-        final boolean isCreate = (uuid == null || uuid.length() == 0);
+        final boolean isCreate = (uuid == null || uuid.isEmpty());
         Resume r;
         if (isCreate) {
             r = new Resume(fullName);
@@ -76,7 +77,8 @@ public class ResumeServlet extends HttpServlet {
                                 String[] descriptions = request.getParameterValues(pfx + "description");
                                 for (int j = 0; j < titles.length; j++) {
                                     if (!HtmlUtil.isEmpty(titles[j])) {
-                                        positions.add(new Period(DateUtil.parse(startDates[j]), DateUtil.parse(endDates[j]), titles[j], descriptions[j]));
+                                        positions.add(new Period(DateUtil.parse(startDates[j]),
+                                                DateUtil.parse(endDates[j]), titles[j], descriptions[j]));
                                     }
                                 }
                                 orgs.add(new Organization(new Link(name, urls[i]), positions));
@@ -95,7 +97,8 @@ public class ResumeServlet extends HttpServlet {
         response.sendRedirect("resume");
     }
 
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws javax.servlet.ServletException, IOException {
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws javax.servlet.ServletException, IOException {
         String uuid = request.getParameter("uuid");
         String action = request.getParameter("action");
         if (action == null) {

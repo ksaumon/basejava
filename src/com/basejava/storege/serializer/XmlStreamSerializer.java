@@ -5,13 +5,14 @@ import com.basejava.util.XmlParser;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
+import java.time.LocalDate;
 
 public class XmlStreamSerializer implements StreamSerializer {
-    private XmlParser xmlParser;
+    private final XmlParser xmlParser;
 
     public XmlStreamSerializer() {
         xmlParser = new XmlParser(
-                Resume.class, Organization.class, Link.class,
+                Resume.class, Organization.class, Link.class, LocalDate.class,
                 OrganizationSection.class, TextSection.class, ListSection.class, Period.class);
     }
 
