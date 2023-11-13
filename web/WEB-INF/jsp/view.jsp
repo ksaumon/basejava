@@ -7,7 +7,9 @@
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <link rel="stylesheet" href="css/style.css">
+<%--    <link rel="stylesheet" href="css/theme/${theme}.css">--%>
+    <link rel="stylesheet" href="css/styles.css">
+<%--    <link rel="stylesheet" href="css/edit-resume-styles.css">--%>
     <jsp:useBean id="resume" type="com.basejava.model.Resume" scope="request"/>
     <title>Резюме ${resume.fullName}</title>
 </head>

@@ -8,8 +8,8 @@
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <link rel="stylesheet" href="css/style.css">
-    <jsp:useBean id="resume" type="com.basejava.model.Resume" scope="request"/>
+    <link rel="stylesheet" href="css/styles.css">
+    <jsp:useBean id="resume" type="com.basejava.model.Resume" scope="request"/>--%>
     <title>Резюме ${resume.fullName}</title>
 </head>
 <body>
@@ -19,7 +19,7 @@
         <input type="hidden" name="uuid" value="${resume.uuid}">
         <h1>Имя:</h1>
         <dl>
-            <input type="text" name="fullName" size=55 value="${resume.fullName}">
+            <input type="text" name="fullName" size=55 value="${resume.fullName}" required pattern="^\S.*$">
         </dl>
         <h2>Контакты:</h2>
         <c:forEach var="type" items="<%=ContactType.values()%>">
@@ -44,8 +44,8 @@
                     <textarea name='${type}' cols=75
                               rows=5><%=String.join("\n", ((ListSection) section).getItems())%></textarea>
                 </c:when>
-                <c:when test="${type=='EXPERIENCE' || type=='EDUCATION'}">
-                    <c:forEach var="org" items="<%=((OrganizationSection) section).getOrganizations()%>"
+                <c:when test="${(type eq 'EXPERIENCE' || type eq 'EDUCATION') and not empty section.organizations}">
+                        <c:forEach var="org" items="<%=((OrganizationSection) section).getOrganizations()%>"
                                varStatus="counter">
                         <dl>
                             <dt>Название учереждения:</dt>
