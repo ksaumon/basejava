@@ -28,7 +28,7 @@ public class ResumeServlet extends HttpServlet {
             throws javax.servlet.ServletException, IOException {
         request.setCharacterEncoding("UTF-8");
         String uuid = request.getParameter("uuid");
-        String fullName = request.getParameter("fullName");
+        String fullName = request.getParameter("fullName").trim();
 
         final boolean isCreate = (uuid == null || uuid.isEmpty());
         Resume r;
