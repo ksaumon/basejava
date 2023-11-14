@@ -13,7 +13,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class ResumeServlet extends HttpServlet {
     private Storage storage;
@@ -28,7 +30,7 @@ public class ResumeServlet extends HttpServlet {
             throws javax.servlet.ServletException, IOException {
         request.setCharacterEncoding("UTF-8");
         String uuid = request.getParameter("uuid");
-        String fullName = request.getParameter("fullName").trim();
+        String fullName = request.getParameter("fullName");
 
         final boolean isCreate = (uuid == null || uuid.isEmpty());
         Resume r;
@@ -60,7 +62,11 @@ public class ResumeServlet extends HttpServlet {
                         break;
                     case ACHIEVEMENT:
                     case QUALIFICATIONS:
-                        r.setSection(type, new ListSection(value.split("\\n")));
+                        String[] items = value.split("\\n");
+                        List<String> nonEmptyItems = Arrays.stream(items)
+                                .filter(item -> !item.trim().isEmpty())
+                                .collect(Collectors.toList());
+                        r.setSection(type, new ListSection(nonEmptyItems));
                         break;
                     case EDUCATION:
                     case EXPERIENCE:
